@@ -7,50 +7,64 @@ A complete Java desktop application designed to manage a car dealership’s inve
 ## 🧠 Key Skills Demonstrated
 
 - **Java GUI Development (Swing):** Multiple interface panels for editing, viewing, and interacting with records
-- **Database Integration (JPA):** Uses Jakarta Persistence and MySQL connector for full CRUD operations
+- **Database Integration (JPA):** Uses Jakarta Persistence and Hibernate for full CRUD operations
 - **Object-Oriented Architecture:** Structured into Domain (PD), Data Access (DAO), and UI (HI) layers
-- **DAO Pattern:** Isolates persistence logic for entities such as `Car`, `Dealer`, and `SalesPerson`
-- **Event-Driven Programming:** Handles user input and interactions through `ActionListener`s and components
-- **Modular Development:** Scalable and maintainable structure across clearly defined Java packages
+- **DAO Pattern:** Isolates persistence logic and transaction management for entities such as `Car`, `Dealer`, and `SalesPerson`
+- **Testing:** Automated DAO tests using JUnit 5 and an in-memory H2 database
 
 ---
 
 ## 🧱 Tech Stack
 
-- **Language:** Java SE
-- **Frameworks/Libraries:** Swing, JPA (Jakarta Persistence API), EclipseLink
-- **Database:** MySQL (via JDBC and persistence.xml configuration)
-- **Build Tool:** Manual / IDE-based (Eclipse recommended)
-- **JARs:** `mysql-connector-j-9.1.0.jar`, `eclipselink.jar`
+- **Language:** Java 17+
+- **Frameworks/Libraries:** Swing, JPA (Jakarta Persistence API), Hibernate
+- **Database:** MySQL (Production) & H2 (Testing)
+- **Build Tool:** Maven
 
 ---
 
 ## 🗂️ Project Structure
 
+```text
 DealerProject/
-├── src/
-│ ├── dealerPD/ → Entity classes (Car, Dealer, SalesPerson)
-│ ├── dealerDAO/ → Data Access Objects for persistence
-│ ├── dealerHI/ → Swing UI classes (DealerFrame, CarEdit, Selection panels)
-│ └── META-INF/ → persistence.xml configuration
-├── lib/ → External libraries (JARs)
-├── persistence.xml → Database and JPA configuration
-
-
+├── pom.xml → Maven build configuration
+└── src/
+    ├── main/
+    │   ├── java/
+    │   │   ├── dealerPD/  → Entity classes (Car, Dealer, SalesPerson)
+    │   │   ├── dealerDAO/ → Data Access Objects managing JPA transactions
+    │   │   └── dealerHI/  → Swing UI forms and selection panels
+    │   └── resources/
+    │       └── META-INF/persistence.xml → MySQL Database configuration
+    └── test/
+        ├── java/
+        │   └── dealerDAO/ → JUnit 5 Tests for DAOs
+        └── resources/
+            └── META-INF/persistence.xml → H2 In-Memory DB configuration
+```
 
 ---
 
 ## 🚀 How to Run
 
-### Option 1: Eclipse (Recommended)
-1. Import the project as a Java project
-2. Add external JARs:
-   - `eclipselink.jar`
-   - `mysql-connector-j-9.1.0.jar`
-3. Ensure MySQL server is running and the required database exists
-4. Run `DealerStart.java` as the entry point
+### Option 1: Using Maven (Recommended)
 
-### Option 2: Manual Compile (Advanced)
-```bash
-javac -cp "lib/*" src/dealerHI/DealerStart.java
-java -cp "lib/*:src" dealerHI.DealerStart
+1. Ensure Java 17+ and Maven are installed on your system.
+2. Navigate to the `DealerProject` directory.
+3. Start your local MySQL server (ensure root has no password, or update `src/main/resources/META-INF/persistence.xml` to match your credentials).
+4. Run the application:
+   ```bash
+   mvn clean compile exec:java -Dexec.mainClass="dealerHI.DealerStart"
+   ```
+
+### Option 2: Running Tests
+
+1. No active database required (uses in-memory H2 DB automatically).
+2. Run standard Maven verification:
+   ```bash
+   mvn clean test
+   ```
+
+### Option 3: IDE
+
+Import the directory as an existing Maven project into IntelliJ IDEA, Eclipse, or VS Code. Run `DealerStart.java` as the entry point or run the test suite directly from your IDE GUI.
